@@ -206,7 +206,7 @@
         </div>
     </div>
 
-    <a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJvnrhDkgZxnNVdmGMpKgqvpbwBMvmBWdhlxcQwFgbkpvJvDtPPtBwJjMWpWLCwvHnCmrXV" class="feedback-button" title="Give Feedback">Feedback</a>
+    <a href="mailto:23053498@kiit.ac.in?subject=Feedback%20Regarding%20Kiit%20University%20Student%20Calendar" class="feedback-button">Feedback</a>
 
     <div id="tooltip" class="tooltip"></div>
 
@@ -243,8 +243,8 @@
         ];
 
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        let currentMonth = 7; // August
-        let currentYear = 2024;
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
 
         function generateCalendar(month, year) {
             const daysInMonth = new Date(year, month + 1, 0).getDate();
