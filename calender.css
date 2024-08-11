@@ -1,0 +1,156 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.calendar-container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.calendar-title {
+    font-size: 1.5em;
+    color: #a349a4;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.nav-button {
+    background-color: #a349a4;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: #7d267d;
+}
+
+.weekdays {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-weight: bold;
+    color: #888;
+    margin: 0;
+}
+
+.days {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0;
+}
+
+.days div {
+    width: 13.6%;
+    padding: 10px 0;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+    color: #555;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.days div.active {
+    background-color: #a349a4;
+    color: white;
+}
+
+.days div.holiday {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.days div.sunday {
+    background-color: #32CD32; /* LimeGreen color for Sundays */
+    color: white;
+}
+
+.days div.highlight {
+    background-color: #1e90ff; /* Blue color for special dates */
+    color: white;
+}
+
+.days div:hover {
+    background-color: #ddd;
+}
+
+.month-selector {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.month-selector div {
+    font-size: 0.9em;
+    cursor: pointer;
+    color: #555;
+}
+
+.month-selector div.active {
+    color: #a349a4;
+    font-weight: bold;
+}
+
+.feedback-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #a349a4;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.feedback-button:hover {
+    background-color: #7d267d;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    display: none;
+    z-index: 100;
+}

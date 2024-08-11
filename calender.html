@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIIT University Student Calendar</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calendar-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .calendar-title {
+            font-size: 1.5em;
+            color: #a349a4;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .nav-button {
+            background-color: #a349a4;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #7d267d;
+        }
+
+        .weekdays {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-weight: bold;
+            color: #888;
+            margin: 0;
+        }
+
+        .days {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 0;
+        }
+
+        .days div {
+            width: 13.6%;
+            padding: 10px 0;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            background-color: #f4f4f4;
+            color: #555;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .days div.active {
+            background-color: #a349a4;
+            color: white;
+        }
+
+        .days div.holiday {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        .days div.sunday {
+            background-color: #32CD32; /* LimeGreen color for Sundays */
+            color: white;
+        }
+
+        .days div.highlight {
+            background-color: #9eb4ca; /* Blue color for special dates */
+            color: white;
+        }
+
+        .days div:hover {
+            background-color: #ddd;
+        }
+
+        .month-selector {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+
+        .month-selector div {
+            font-size: 0.9em;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .month-selector div.active {
+            color: #a349a4;
+            font-weight: bold;
+        }
+
+        .feedback-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #a349a4;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .feedback-button:hover {
+            background-color: #7d267d;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            display: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calendar-container">
+        <div class="calendar-title">
+            KIIT University Student Calendar
+        </div>
+
+        <div class="calendar-header">
+            <button class="nav-button" onclick="changeMonth(-1)">&#10094;</button>
+            <h2 id="monthYear">August 2024</h2>
+            <button class="nav-button" onclick="changeMonth(1)">&#10095;</button>
+        </div>
+
+        <div class="weekdays">
+            <div>Mo</div>
+            <div>Tu</div>
+            <div>We</div>
+            <div>Th</div>
+            <div>Fr</div>
+            <div>Sa</div>
+            <div>Su</div>
+        </div>
+
+        <div class="days">
+            <!-- Days will be dynamically generated here -->
+        </div>
+
+        <div class="month-selector">
+            <div>Jan</div>
+            <div>Feb</div>
+            <div>Mar</div>
+            <div>Apr</div>
+            <div>May</div>
+            <div>Jun</div>
+            <div>Jul</div>
+            <div class="active">Aug</div>
+            <div>Sep</div>
+            <div>Oct</div>
+            <div>Nov</div>
+            <div>Dec</div>
+        </div>
+    </div>
+
+    <a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJvnrhDkgZxnNVdmGMpKgqvpbwBMvmBWdhlxcQwFgbkpvJvDtPPtBwJjMWpWLCwvHnCmrXV" class="feedback-button" title="Give Feedback">Feedback</a>
+
+    <div id="tooltip" class="tooltip"></div>
+
+    <script>
+        const holidays2024 = [
+            { start: "01-26", end: "01-26", label: "Republic Day" },
+            { start: "02-14", end: "02-14", label: "Basanta Panchami" },
+            { start: "03-05", end: "03-05", label: "Panchayati Raj Diwas" },
+            { start: "03-08", end: "03-08", label: "Maha Shivaratri" },
+            { start: "03-26", end: "03-26", label: "Holi" },
+            { start: "03-29", end: "03-29", label: "Good Friday" },
+            { start: "04-01", end: "04-01", label: "Utkal Divas" },
+            { start: "04-11", end: "04-11", label: "Id-ul-Fitre" },
+            { start: "04-17", end: "04-17", label: "Ram Navami" },
+            { start: "06-17", end: "06-17", label: "Id-ul-Juha" },
+            { start: "07-17", end: "07-17", label: "Muharram" },
+            { start: "08-15", end: "08-15", label: "Independence Day" },
+            { start: "08-26", end: "08-26", label: "Janmastami" },
+            { start: "09-16", end: "09-16", label: "Birthday of Prophet Mohammad" },
+            { start: "10-02", end: "10-02", label: "Gandhi Jayanti" },
+            { start: "10-10", end: "10-16", label: "Durga Puja" }, // Example range
+            { start: "10-31", end: "10-31", label: "Kalipuja & Diwali" },
+            { start: "11-15", end: "11-15", label: "Kartika Purnima / Guru Nanak’s Birthday" },
+        ];
+
+        const specialDates2024 = [
+            { label: "Reporting/Registration/Academic Induction/Sharing of Academic Vision" },
+            { label: "Pre-Mid Semester Session" },
+            { start: "09-17", end: "09-21", label: "Mid-Semester Examination" }, // Example range
+            { label: "Post-Mid Semester Session" },
+            { label: "Sessional/Practical/Project/Thesis Exam" },
+            { start: "11-22", end: "11-30", label: "End Semester Examination" },
+            { label: "Starting of the Spring Semester" },
+        ];
+
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let currentMonth = 7; // August
+        let currentYear = 2024;
+
+        function generateCalendar(month, year) {
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysContainer = document.querySelector(".days");
+            const monthYearText = document.getElementById("monthYear");
+            const tooltip = document.getElementById("tooltip");
+
+            daysContainer.innerHTML = ""; // Clear existing days
+
+            // Set month and year
+            monthYearText.innerHTML = `${monthNames[month]} ${year}`;
+
+            // Adding blank spaces for days before the first day of the month
+            for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
+                daysContainer.innerHTML += `<div></div>`;
+            }
+
+            // Adding days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = `${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                let isHoliday = "";
+                let isSunday = new Date(year, month, day).getDay() === 0 ? "sunday" : "";
+                let isHighlight = "";
+
+                holidays2024.forEach(holiday => {
+                    if (isDateInRange(date, holiday.start, holiday.end)) {
+                        isHoliday = "holiday";
+                    }
+                });
+
+                specialDates2024.forEach(specialDate => {
+                    if (isDateInRange(date, specialDate.start, specialDate.end)) {
+                        isHighlight = "highlight";
+                    }
+                });
+
+                daysContainer.innerHTML += `<div class="${isHoliday} ${isSunday} ${isHighlight}" data-holiday="${getLabelForDate(date, holidays2024)}" data-special="${getLabelForDate(date, specialDates2024)}">${day}</div>`;
+            }
+
+            // Add click event listener to show tooltip
+            document.querySelectorAll('.days div').forEach(dayDiv => {
+                dayDiv.addEventListener('click', function(event) {
+                    const holidayName = this.dataset.holiday;
+                    const specialDate = this.dataset.special;
+
+                    if (this.classList.contains('holiday') && holidayName) {
+                        tooltip.innerHTML = holidayName;
+                        tooltip.style.display = 'block';
+                        tooltip.style.left = `${event.pageX + 10}px`;
+                        tooltip.style.top = `${event.pageY + 10}px`;
+                    } else if (this.classList.contains('highlight') && specialDate) {
+                        tooltip.innerHTML = specialDate;
+                        tooltip.style.display = 'block';
+                        tooltip.style.left = `${event.pageX + 10}px`;
+                        tooltip.style.top = `${event.pageY + 10}px`;
+                    } else {
+                        tooltip.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        function changeMonth(change) {
+            currentMonth += change;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentMonth, currentYear);
+        }
+
+        function isDateInRange(date, start, end) {
+            return date >= start && date <= end;
+        }
+
+        function getLabelForDate(date, datesArray) {
+            for (let i = 0; i < datesArray.length; i++) {
+                if (isDateInRange(date, datesArray[i].start, datesArray[i].end)) {
+                    return datesArray[i].label;
+                }
+            }
+            return null;
+        }
+
+        document.addEventListener('click', function(event) {
+            const tooltip = document.getElementById('tooltip');
+            if (!event.target.closest('.days div')) {
+                tooltip.style.display = 'none';
+            }
+        });
+
+        generateCalendar(currentMonth, currentYear);
+    </script>
+</body>
+</html>
